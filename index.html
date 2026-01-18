@@ -8,13 +8,42 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: {
+              primary: '#0f1115',
+              secondary: '#141821',
+              card: '#181d27'
+            },
+            border: {
+              subtle: '#242a38'
+            },
+            text: {
+              primary: '#f3f4f6',
+              secondary: '#b6bcc9',
+              muted: '#7d8596'
+            },
+            accent: {
+              primary: '#6b8cff'
+            }
+          },
+          boxShadow: {
+            soft: '0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.35)'
+          }
+        }
+      }
+    }
+    </script>
+
     <style>
         body { margin: 0; padding: 0; }
     </style>
 </head>
 <body>
     <div id="root"></div>
-
     <script type="text/babel">
         const { useState, useMemo } = React;
 
@@ -499,22 +528,22 @@
           };
 
           return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+            <div className="min-h-screen bg-bg-primary text-text-primary">
               {/* Header */}
-              <div className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-xl border-b border-slate-800 shadow-lg">
+              <div className="sticky top-0 z-50 bg-bg-primary border-b border-border-subtle">
                 <div className="max-w-7xl mx-auto px-6 py-4">
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <h1 className="text-3xl font-bold text-white mb-1">
+                      <h1 className="text-2xl font-semibold tracking-tight text-text-primary mb-1">
                         Anthropic GTM Playbook
                       </h1>
-                      <p className="text-slate-400">
+                      <p className="text-text-secondary">
                         Your single source of truth for selling Claude across industries
                       </p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="px-3 py-1.5 bg-orange-500/10 border border-orange-500/30 rounded-lg">
-                        <span className="text-xs text-orange-400 font-medium">Internal Use Only</span>
+                      <div className="px-3 py-1.5 bg-bg-secondary border border-border-subtle rounded-full">
+                        <span className="text-xs text-text-secondary font-medium">Internal Use Only</span>
                       </div>
                     </div>
                   </div>
