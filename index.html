@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anthropic GTM Playbook - Internal Sales Tool</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+  <meta charset="UTF-8" />
+  <title>Claude Market Intelligence</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
     tailwind.config = {
       theme: {
         extend: {
@@ -36,791 +34,201 @@
         }
       }
     }
-    </script>
+  </script>
 
-    <style>
-        body {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont;
-  letter-spacing: -0.01em;
+  <style>
+    body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont;
+      letter-spacing: -0.01em;
+    }
+  </style>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body class="bg-bg-primary text-text-primary">
+  <div id="root"></div>
+
+  <script type="text/babel">
+
+const industries = [
+  {
+    id: 'finance',
+    name: 'Finance',
+    description: 'Banking, fintech, hedge funds, private equity',
+    useCases: [
+      {
+        title: 'Risk Assessment Automation',
+        pain: 'Manual credit risk analysis is slow and inconsistent',
+        solution: 'Claude analyzes financial statements and market data for faster risk scoring',
+        buyers: 'Risk managers, credit analysts',
+        competitors: 'FICO, Moody’s Analytics'
+      }
+    ]
+  },
+  {
+    id: 'healthcare',
+    name: 'Healthcare',
+    description: 'Hospitals, biotech, health tech',
+    useCases: [
+      {
+        title: 'Clinical Documentation',
+        pain: 'Doctors spend hours on notes instead of patients',
+        solution: 'Claude auto-generates clinical notes from conversations',
+        buyers: 'Hospital CIOs, CMIOs',
+        competitors: 'Nuance, Abridge'
+      }
+    ]
+  },
+  {
+    id: 'adtech',
+    name: 'Ad Tech',
+    description: 'Advertising platforms, agencies, marketing tech',
+    useCases: [
+      {
+        title: 'Campaign Optimization',
+        pain: 'Marketers manually analyze performance data',
+        solution: 'Claude interprets multi-channel campaign data',
+        buyers: 'Marketing directors, growth teams',
+        competitors: 'Sprinklr, Adobe'
+      }
+    ]
+  }
+];
+
+const getColorClasses = () => ({
+  bg: 'bg-bg-secondary',
+  border: 'border-border-subtle',
+  text: 'text-accent-primary'
+});
+
+function App() {
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [selectedIndustry, setSelectedIndustry] = React.useState(null);
+
+  return (
+    <div className="min-h-screen bg-bg-primary text-text-primary">
+
+      {/* Header */}
+      <div className="sticky top-0 z-50 bg-bg-primary border-b border-border-subtle">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight text-text-primary mb-1">
+                Claude Market Intelligence
+              </h1>
+              <p className="text-text-secondary">
+                Internal research platform for vertical GTM strategy
+              </p>
+            </div>
+            <div className="px-3 py-1.5 bg-bg-secondary border border-border-subtle rounded-full">
+              <span className="text-xs text-text-secondary font-medium">
+                Internal Use Only
+              </span>
+            </div>
+          </div>
+
+          {/* Search */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search industries, use cases, or pain points..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 bg-bg-secondary border border-border-subtle rounded-lg
+                         focus:outline-none focus:border-accent-primary transition-all
+                         text-text-primary placeholder-text-muted"
+            />
+            <div className="absolute left-4 top-3.5 text-text-muted">
+              🔍
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+
+        {/* Industries */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {industries.map(industry => {
+            const colors = getColorClasses();
+            const isSelected = selectedIndustry?.id === industry.id;
+
+            return (
+              <button
+                key={industry.id}
+                onClick={() => setSelectedIndustry(industry)}
+                className={`text-left p-7 rounded-xl border transition-all shadow-soft ${
+                  isSelected
+                    ? 'border-accent-primary bg-bg-card'
+                    : 'border-border-subtle bg-bg-card hover:border-text-muted'
+                }`}
+              >
+                <h2 className="text-lg font-medium tracking-tight text-text-primary mb-1">
+                  {industry.name}
+                </h2>
+                <p className="text-sm text-text-secondary">
+                  {industry.description}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Use Cases */}
+        {selectedIndustry && (
+          <div className="space-y-6">
+            <h3 className="text-lg font-medium text-text-primary tracking-tight">
+              Use Cases — {selectedIndustry.name}
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {selectedIndustry.useCases.map((useCase, index) => (
+                <div
+                  key={index}
+                  className="bg-bg-card border border-border-subtle rounded-lg overflow-hidden shadow-soft"
+                >
+                  <div className="p-6 hover:bg-bg-secondary transition-colors">
+                    <h4 className="text-base font-medium text-text-primary mb-4">
+                      {useCase.title}
+                    </h4>
+
+                    <div className="space-y-3 text-sm">
+                      <div>
+                        <span className="text-text-muted">Pain:</span>
+                        <p className="text-text-secondary">{useCase.pain}</p>
+                      </div>
+                      <div>
+                        <span className="text-text-muted">Solution:</span>
+                        <p className="text-text-secondary">{useCase.solution}</p>
+                      </div>
+                      <div>
+                        <span className="text-text-muted">Buyers:</span>
+                        <p className="text-text-secondary">{useCase.buyers}</p>
+                      </div>
+                      <div>
+                        <span className="text-text-muted">Competitors:</span>
+                        <p className="text-text-secondary">{useCase.competitors}</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
 }
 
-        body { margin: 0; padding: 0; }
-    </style>
-</head>
-<body>
-    <div id="root"></div>
-    <script type="text/babel">
-        const { useState, useMemo } = React;
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 
-        // Inline SVG Icons
-        const Search = ({ className }) => (
-            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
-            </svg>
-        );
-        const ChevronDown = ({ className }) => (
-            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-        );
-        const ChevronRight = ({ className }) => (
-            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-        );
-        const Users = ({ className }) => (
-            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            </svg>
-        );
-        const Target = ({ className }) => (
-            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle>
-                <circle cx="12" cy="12" r="2"></circle>
-            </svg>
-        );
-        const Lightbulb = ({ className }) => (
-            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <path d="M9 18h6"></path><path d="M10 22h4"></path>
-                <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.33.64 2.5 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path>
-            </svg>
-        );
-        const CheckCircle2 = ({ className }) => (
-            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                <path d="m9 12 2 2 4-4"></path>
-            </svg>
-        );
-        const AlertCircle = ({ className }) => (
-            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line>
-                <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-        );
-        const Building2 = ({ className }) => (
-            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
-                <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
-                <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path>
-                <path d="M10 6h4"></path><path d="M10 10h4"></path><path d="M10 14h4"></path><path d="M10 18h4"></path>
-            </svg>
-        );
-        const Copy = ({ className }) => (
-            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-        );
-        const Check = ({ className }) => (
-            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-        );
-
-        const AnthropicGTMDashboard = () => {
-          const [selectedIndustry, setSelectedIndustry] = useState(null);
-          const [expandedUseCase, setExpandedUseCase] = useState(null);
-          const [searchTerm, setSearchTerm] = useState('');
-          const [copiedText, setCopiedText] = useState(null);
-
-          const gtmData = {
-            financial: {
-              name: 'Financial Services',
-              color: 'blue',
-              description: 'Banking, Investment Management, Insurance & Capital Markets',
-              keyConsiderations: [
-                'Regulatory compliance (SEC, FINRA, OCC, AML/KYC)',
-                'Data security and privacy requirements',
-                'Audit trail and explainability needs',
-                'Human-in-the-loop workflows essential'
-              ],
-              useCases: [
-                {
-                  id: 'fs-1',
-                  name: 'Regulatory & Compliance Analysis Assistant',
-                  shortPitch: 'Instant answers to regulatory questions without replacing human judgment',
-                  problemSolved: 'Financial institutions face constantly changing regulations (SEC, FINRA, OCC, AML, KYC). Compliance teams spend enormous time reviewing guidance, interpreting updates, and answering internal questions — often manually and inconsistently.',
-                  howUsed: [
-                    'Ingest regulatory texts, policy documents, and internal compliance manuals',
-                    'Answer natural-language questions from compliance, legal, and operations teams',
-                    'Summarize regulatory changes and map them to internal policies',
-                    'Assist with first-pass reviews of compliance documentation (with human oversight)'
-                  ],
-                  whyAnthropic: [
-                    'Strong reasoning for interpreting complex, ambiguous regulatory language',
-                    'Safety-focused design reduces risk of hallucinated or misleading guidance',
-                    'Consistency and reliability are critical in regulated environments',
-                    'Well-aligned for human-in-the-loop workflows, not autonomous decision-making'
-                  ],
-                  buyerPersonas: [
-                    { title: 'Chief Compliance Officer', level: 'C-Suite', technical: false },
-                    { title: 'Head of Regulatory Affairs', level: 'VP', technical: false },
-                    { title: 'Legal & Risk Operations teams', level: 'Director/Manager', technical: false }
-                  ],
-                  gtmScenario: '"A compliance team uses Claude internally so employees can ask, \'How does the new SEC guidance affect our onboarding process?\' Claude summarizes the change, points to the source text, and flags areas that still require legal review — saving hours without replacing human judgment."',
-                  keyMetrics: '60-80% reduction in time to answer regulatory questions',
-                  competitiveEdge: 'Constitutional AI training ensures reliable, non-hallucinated responses in high-stakes compliance scenarios'
-                },
-                {
-                  id: 'fs-2',
-                  name: 'Financial Research & Investment Analysis Support',
-                  shortPitch: 'Accelerate research workflows while maintaining analyst judgment',
-                  problemSolved: 'Analysts and investment teams must process massive volumes of information — earnings reports, filings, research notes, and market commentary — under tight deadlines.',
-                  howUsed: [
-                    'Summarize earnings calls and financial filings',
-                    'Compare company disclosures across quarters',
-                    'Extract key risks, assumptions, and trends',
-                    'Draft internal research briefs and investment memos'
-                  ],
-                  whyAnthropic: [
-                    'High-quality summarization without losing nuance',
-                    'Structured reasoning across long documents',
-                    'Designed to avoid overconfident speculation',
-                    'Strong performance on long-context financial text (200K token window)'
-                  ],
-                  buyerPersonas: [
-                    { title: 'Equity Research Analysts', level: 'IC/Senior Analyst', technical: true },
-                    { title: 'Portfolio Managers', level: 'VP/Director', technical: false },
-                    { title: 'Investment Strategy Teams', level: 'Director', technical: true }
-                  ],
-                  gtmScenario: '"An analyst uploads multiple 10-Ks and asks Claude to highlight changes in risk disclosures year over year. Instead of reading hundreds of pages, they get a structured summary they can validate and build on."',
-                  keyMetrics: '50-70% faster research preparation time',
-                  competitiveEdge: 'Extended context window handles entire annual reports; avoids speculative claims that could mislead investment decisions'
-                },
-                {
-                  id: 'fs-3',
-                  name: 'Client Communication & Advisory Support',
-                  shortPitch: 'Compliant, client-ready communications at scale',
-                  problemSolved: 'Advisors and relationship managers need to communicate clearly with clients about complex financial products, market changes, and portfolio performance — often under time pressure.',
-                  howUsed: [
-                    'Draft client-ready explanations of market events',
-                    'Tailor communications to different levels of financial sophistication',
-                    'Generate compliant, review-ready drafts for emails and reports',
-                    'Support advisors with on-demand explanations during client prep'
-                  ],
-                  whyAnthropic: [
-                    'Controlled, explainable outputs suitable for client-facing content',
-                    'Emphasis on clarity and accuracy over persuasion',
-                    'Strong alignment with brand-safe, compliant communication workflows',
-                    'Transparent reasoning helps advisors validate before sending'
-                  ],
-                  buyerPersonas: [
-                    { title: 'Wealth Advisors', level: 'IC/Senior Advisor', technical: false },
-                    { title: 'Relationship Managers', level: 'VP', technical: false },
-                    { title: 'Client Communications Teams', level: 'Manager/Director', technical: false }
-                  ],
-                  gtmScenario: '"A wealth advisor asks Claude to draft a plain-language explanation of interest rate changes for a conservative client. The draft is reviewed and approved internally, cutting prep time while maintaining compliance standards."',
-                  keyMetrics: '40-60% reduction in client communication preparation time',
-                  competitiveEdge: 'Constitutional AI reduces risk of inappropriate financial advice; outputs designed for human review workflows'
-                },
-                {
-                  id: 'fs-4',
-                  name: 'Operational Risk & Internal Knowledge Assistant',
-                  shortPitch: 'Reduce operational risk through instant access to policies and procedures',
-                  problemSolved: 'Large financial institutions struggle with fragmented internal knowledge across policies, procedures, and operational guidelines — increasing operational risk and inefficiency.',
-                  howUsed: [
-                    'Internal Q&A systems for policies and procedures',
-                    'First-line support for operations and risk teams',
-                    'Summaries of incident reports and root-cause analyses',
-                    'Knowledge discovery across siloed documentation'
-                  ],
-                  whyAnthropic: [
-                    'Reliability and predictability for internal decision support',
-                    'Designed for enterprise governance and access controls',
-                    'Supports transparency and traceability in responses',
-                    'Citation capabilities help verify information sources'
-                  ],
-                  buyerPersonas: [
-                    { title: 'Chief Risk Officer', level: 'C-Suite', technical: false },
-                    { title: 'Operations Leadership', level: 'SVP/VP', technical: false },
-                    { title: 'Internal Audit Teams', level: 'Director/Manager', technical: true }
-                  ],
-                  gtmScenario: '"Operations teams use Claude internally to quickly answer, \'What\'s the approved escalation path for this type of incident?\' reducing delays and lowering operational risk."',
-                  keyMetrics: '70-80% faster internal knowledge retrieval',
-                  competitiveEdge: 'Enterprise-grade security and access controls; designed for regulated environment requirements'
-                }
-              ]
-            },
-            healthcare: {
-              name: 'Healthcare',
-              color: 'green',
-              description: 'Providers, Payers, Life Sciences & Health Systems',
-              keyConsiderations: [
-                'HIPAA compliance and BAA requirements',
-                'Clinical accuracy and patient safety paramount',
-                'Integration with existing EHR/clinical workflows',
-                'Physician burnout and administrative burden reduction'
-              ],
-              useCases: [
-                {
-                  id: 'hc-1',
-                  name: 'Clinical Documentation & Administrative Burden Reduction',
-                  shortPitch: 'Give clinicians time back for patient care',
-                  problemSolved: 'Physicians spend 2+ hours on documentation for every 1 hour of patient care, contributing to burnout. Manual clinical documentation, prior authorization, and administrative tasks overwhelm care teams.',
-                  howUsed: [
-                    'Generate clinical note drafts from patient encounters',
-                    'Auto-populate discharge summaries and procedure notes',
-                    'Draft prior authorization requests with clinical justification',
-                    'Create patient-friendly after-visit summaries'
-                  ],
-                  whyAnthropic: [
-                    'Lowest hallucination rates critical for clinical accuracy',
-                    'Constitutional AI training emphasizes safety in medical contexts',
-                    'Extended context handles full patient histories',
-                    'Transparent reasoning allows clinician verification'
-                  ],
-                  buyerPersonas: [
-                    { title: 'Chief Medical Information Officer', level: 'C-Suite', technical: true },
-                    { title: 'VP of Clinical Operations', level: 'VP', technical: false },
-                    { title: 'Physician Leadership', level: 'Medical Director', technical: false }
-                  ],
-                  gtmScenario: '"A hospital system implements Claude to assist with clinical documentation. Physicians review and approve AI-generated notes, reducing after-hours charting by 50% and improving work-life balance while maintaining documentation quality."',
-                  keyMetrics: '50-70% reduction in documentation time; 2-4 additional patient visits possible per day',
-                  competitiveEdge: 'HIPAA-compliant with BAA; designed for human-in-the-loop clinical workflows; no training on customer data'
-                },
-                {
-                  id: 'hc-2',
-                  name: 'Medical Coding & Revenue Cycle Optimization',
-                  shortPitch: 'Capture revenue while reducing coding backlogs',
-                  problemSolved: 'Manual medical coding is time-intensive and error-prone. Coding backlogs delay revenue cycle, and undercoding leaves money on the table while overcoding creates compliance risk.',
-                  howUsed: [
-                    'Generate ICD-10, CPT codes from clinical documentation',
-                    'Identify documentation gaps affecting code specificity',
-                    'Flag potential coding compliance issues pre-submission',
-                    'Analyze patterns to identify chronic undercoding opportunities'
-                  ],
-                  whyAnthropic: [
-                    'High accuracy on medical terminology and coding logic',
-                    'Designed to avoid overconfident suggestions that could create compliance risk',
-                    'Supports auditable, explainable coding recommendations',
-                    'Strong performance across medical specialties and documentation styles'
-                  ],
-                  buyerPersonas: [
-                    { title: 'VP of Revenue Cycle', level: 'VP', technical: false },
-                    { title: 'HIM Director', level: 'Director', technical: true },
-                    { title: 'CFO / Financial Operations', level: 'C-Suite', technical: false }
-                  ],
-                  gtmScenario: '"A health system uses Claude to assist coders with complex cases. The AI suggests codes with supporting rationale, which coders review and finalize. Result: 50% faster coding, 2-5% revenue improvement, fewer claim denials."',
-                  keyMetrics: '2-5% revenue capture improvement; 50-60% reduction in coding time',
-                  competitiveEdge: 'Constitutional AI reduces overcoding risk; designed for coder-in-the-loop workflows rather than autonomous coding'
-                },
-                {
-                  id: 'hc-3',
-                  name: 'Clinical Trial & Research Acceleration',
-                  shortPitch: 'Accelerate research without compromising rigor',
-                  problemSolved: 'Clinical trial protocols take 6-12 months to develop. Patient recruitment is slow and expensive. Literature reviews and grant writing consume months of researcher time.',
-                  howUsed: [
-                    'Generate draft research protocols from objectives',
-                    'Screen EHR data to identify eligible trial participants',
-                    'Synthesize medical literature for research proposals',
-                    'Draft grant applications and manuscript sections'
-                  ],
-                  whyAnthropic: [
-                    'Strong reasoning for complex research protocol logic',
-                    'Extended context enables comprehensive literature synthesis',
-                    'Designed to cite sources and avoid speculative claims',
-                    'High accuracy on medical and scientific terminology'
-                  ],
-                  buyerPersonas: [
-                    { title: 'VP of Research', level: 'VP', technical: true },
-                    { title: 'Clinical Trial Operations Director', level: 'Director', technical: true },
-                    { title: 'Academic Medical Center Leadership', level: 'C-Suite', technical: false }
-                  ],
-                  gtmScenario: '"A research institution uses Claude to accelerate protocol development and patient matching. What used to take 9 months now takes 4-5 months, accelerating time to first patient enrollment and reducing development costs."',
-                  keyMetrics: '40-50% reduction in protocol development time; 50-70% faster patient identification',
-                  competitiveEdge: 'Rigorous citation capabilities; designed to avoid hallucinating research findings; HIPAA-compliant patient data handling'
-                },
-                {
-                  id: 'hc-4',
-                  name: 'Payer Operations: Claims & Utilization Management',
-                  shortPitch: 'Scale utilization review without compromising quality',
-                  problemSolved: 'Health plans face growing prior authorization and claims review volume. Manual clinical review creates delays impacting member care and satisfaction. Regulatory requirements demand thorough documentation.',
-                  howUsed: [
-                    'Review prior authorization requests against medical policies',
-                    'Generate approval/denial letters with clinical rationale',
-                    'Analyze claims for coding accuracy and medical necessity',
-                    'Identify cases requiring peer-to-peer clinical review'
-                  ],
-                  whyAnthropic: [
-                    'Medical reasoning capabilities for complex authorization decisions',
-                    'Designed to explain decisions with supporting rationale',
-                    'Consistency in policy application across reviewers',
-                    'Handles medical policies, clinical guidelines, and evidence synthesis'
-                  ],
-                  buyerPersonas: [
-                    { title: 'Chief Medical Officer (Payer)', level: 'C-Suite', technical: false },
-                    { title: 'VP of Utilization Management', level: 'VP', technical: false },
-                    { title: 'Medical Director', level: 'Director', technical: true }
-                  ],
-                  gtmScenario: '"A health plan uses Claude to assist medical reviewers with prior authorizations. Claude reviews requests against policies and suggests approve/deny with rationale. Medical directors review and finalize. Result: 60-70% faster turnaround, consistent policy application."',
-                  keyMetrics: '60-70% reduction in authorization review time; 3x increase in reviews per clinical reviewer',
-                  competitiveEdge: 'Constitutional AI reduces arbitrary denials; designed for clinician-in-the-loop workflows; strong regulatory compliance support'
-                }
-              ]
-            },
-            technology: {
-              name: 'Technology',
-              color: 'purple',
-              description: 'Software, SaaS, Developer Tools & Tech Companies',
-              keyConsiderations: [
-                'Developer productivity and engineering velocity',
-                'Code quality and security requirements',
-                'Customer support scaling challenges',
-                'Technical documentation and knowledge management'
-              ],
-              useCases: [
-                {
-                  id: 'tech-1',
-                  name: 'Engineering Productivity & Code Assistance',
-                  shortPitch: 'Accelerate development without compromising code quality',
-                  problemSolved: 'Engineers spend 35-50% of time on maintenance, debugging, and documentation vs. building new features. Code review bottlenecks delay deployments. Technical debt accumulates.',
-                  howUsed: [
-                    'Generate boilerplate code, tests, and documentation',
-                    'Assist with debugging by analyzing error logs and stack traces',
-                    'Review code for security vulnerabilities and best practices',
-                    'Explain complex codebases for faster onboarding'
-                  ],
-                  whyAnthropic: [
-                    'Strong performance on coding benchmarks with high correctness',
-                    'Extended 200K context handles entire files and related dependencies',
-                    'Designed to avoid suggesting vulnerable or insecure code patterns',
-                    'Transparent reasoning helps engineers validate suggestions'
-                  ],
-                  buyerPersonas: [
-                    { title: 'VP of Engineering', level: 'VP', technical: true },
-                    { title: 'Engineering Managers', level: 'Director/Manager', technical: true },
-                    { title: 'Developer Experience Teams', level: 'IC/Lead', technical: true }
-                  ],
-                  gtmScenario: '"An engineering team uses Claude for code review assistance and documentation generation. Result: 30-50% increase in development velocity, 50-70% reduction in code review time, more thorough test coverage."',
-                  keyMetrics: '30-50% increase in development velocity; 50-70% reduction in code review time',
-                  competitiveEdge: 'Constitutional AI reduces security vulnerability suggestions; designed for engineer-in-the-loop workflows; no training on customer code'
-                },
-                {
-                  id: 'tech-2',
-                  name: 'Technical Support & Customer Success Automation',
-                  shortPitch: 'Scale support without proportional headcount growth',
-                  problemSolved: 'Support tickets grow faster than team capacity. First response time suffers. Agents spend time on repetitive questions rather than complex issues. Documentation gaps create ticket volume.',
-                  howUsed: [
-                    'Generate detailed technical responses from documentation',
-                    'Triage and categorize incoming support tickets',
-                    'Draft troubleshooting guides from resolved tickets',
-                    'Power self-service knowledge bases and chat interfaces'
-                  ],
-                  whyAnthropic: [
-                    'Strong technical reasoning for complex troubleshooting',
-                    'Designed to admit uncertainty rather than hallucinate solutions',
-                    'Consistent, accurate responses from technical documentation',
-                    'Extended context handles comprehensive product documentation'
-                  ],
-                  buyerPersonas: [
-                    { title: 'VP of Customer Success', level: 'VP', technical: false },
-                    { title: 'Head of Support', level: 'Director', technical: true },
-                    { title: 'Customer Experience Leaders', level: 'VP/Director', technical: false }
-                  ],
-                  gtmScenario: '"A SaaS company uses Claude to assist support agents. Agents get AI-drafted responses they can review and customize. Result: 2-3x more tickets handled per agent, faster first response time, improved CSAT scores."',
-                  keyMetrics: '40-60% reduction in average handle time; 2-3x tickets per agent with AI assistance',
-                  competitiveEdge: 'Designed to avoid confident-but-wrong answers; strong performance on technical documentation; enterprise security and privacy'
-                },
-                {
-                  id: 'tech-3',
-                  name: 'Product & Developer Documentation',
-                  shortPitch: 'Comprehensive, up-to-date docs without dedicated writers',
-                  problemSolved: 'Documentation is outdated or incomplete. Engineers resist writing docs. Customers struggle with self-service leading to support tickets. API documentation lags code changes.',
-                  howUsed: [
-                    'Generate API documentation from code and OpenAPI specs',
-                    'Create user guides and tutorials from product features',
-                    'Draft onboarding documentation and getting started guides',
-                    'Maintain changelogs and release notes from commit messages'
-                  ],
-                  whyAnthropic: [
-                    'High-quality technical writing from code context',
-                    'Consistent documentation style and formatting',
-                    'Extended context enables comprehensive API documentation',
-                    'Designed for engineer review and approval workflows'
-                  ],
-                  buyerPersonas: [
-                    { title: 'VP of Product', level: 'VP', technical: false },
-                    { title: 'Developer Relations / DevRel', level: 'Director/Manager', technical: true },
-                    { title: 'Technical Writers', level: 'IC/Manager', technical: true }
-                  ],
-                  gtmScenario: '"A developer tools company uses Claude to generate API documentation from OpenAPI specs and code comments. Engineers review and approve. Result: 70-80% reduction in documentation time, 30-40% reduction in support tickets."',
-                  keyMetrics: '70-80% reduction in documentation writing time; 30-40% reduction in doc-related tickets',
-                  competitiveEdge: 'Strong performance on technical writing; maintains consistency across large documentation sets; designed for review workflows'
-                },
-                {
-                  id: 'tech-4',
-                  name: 'Internal Knowledge Management & Onboarding',
-                  shortPitch: 'Preserve institutional knowledge and accelerate ramp time',
-                  problemSolved: 'Knowledge fragmentation across Slack, Confluence, GitHub, and Google Docs. New employees take months to ramp. Tribal knowledge lost when employees leave. Engineers repeatedly answer the same questions.',
-                  howUsed: [
-                    'Answer questions about internal systems and processes',
-                    'Generate onboarding guides from existing documentation',
-                    'Summarize technical decisions and architectural choices',
-                    'Extract knowledge from Slack conversations and wikis'
-                  ],
-                  whyAnthropic: [
-                    'Reliable retrieval across diverse documentation formats',
-                    'Designed to cite sources for verification',
-                    'Strong reasoning about technical systems and architectures',
-                    'Enterprise security and access controls for sensitive internal info'
-                  ],
-                  buyerPersonas: [
-                    { title: 'CTO / VP of Engineering', level: 'C-Suite/VP', technical: true },
-                    { title: 'Engineering Operations', level: 'Director/Manager', technical: true },
-                    { title: 'People Operations / HR Tech', level: 'Director', technical: false }
-                  ],
-                  gtmScenario: '"A scaling startup uses Claude as an internal knowledge assistant. New engineers ask questions about architecture, deployment processes, and coding standards. Result: 50% faster onboarding, reduced interruptions to senior engineers."',
-                  keyMetrics: '40-50% reduction in onboarding time; 60-70% reduction in repeated questions to senior engineers',
-                  competitiveEdge: 'No training on customer data; designed for enterprise access controls; strong citation and source attribution'
-                }
-              ]
-            }
-          };
-
-          const searchResults = useMemo(() => {
-            if (!searchTerm) return null;
-            
-            const results = [];
-            Object.entries(gtmData).forEach(([industryKey, industry]) => {
-              industry.useCases.forEach(useCase => {
-                const searchLower = searchTerm.toLowerCase();
-                if (
-                  useCase.name.toLowerCase().includes(searchLower) ||
-                  useCase.shortPitch.toLowerCase().includes(searchLower) ||
-                  useCase.problemSolved.toLowerCase().includes(searchLower) ||
-                  useCase.buyerPersonas.some(p => p.title.toLowerCase().includes(searchLower))
-                ) {
-                  results.push({ ...useCase, industry: industry.name, industryKey });
-                }
-              });
-            });
-            return results;
-          }, [searchTerm]);
-
-          const copyToClipboard = (text, id) => {
-            navigator.clipboard.writeText(text);
-            setCopiedText(id);
-            setTimeout(() => setCopiedText(null), 2000);
-          };
-
-          const const const const const const const const const const const const const const const const const const const const const const const const const const getColorClasses = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = (color) => {
-            const colors = {
-              blue: {
-                bg: 'bg-blue-900/20',
-                border: 'border-blue-500',
-                text: 'text-blue-400',
-                hover: 'hover:bg-blue-900/30',
-                gradient: 'from-blue-900 to-blue-800'
-              },
-              green: {
-                bg: 'bg-green-900/20',
-                border: 'border-green-500',
-                text: 'text-green-400',
-                hover: 'hover:bg-green-900/30',
-                gradient: 'from-green-900 to-green-800'
-              },
-              purple: {
-                bg: 'bg-purple-900/20',
-                border: 'border-purple-500',
-                text: 'text-purple-400',
-                hover: 'hover:bg-purple-900/30',
-                gradient: 'from-purple-900 to-purple-800'
-              }
-            };
-            return colors[color] || colors.blue;
-          };
-
-          return (
-            <div className="min-h-screen bg-bg-primary text-text-primary">
-              {/* Header */}
-              <div className="sticky top-0 z-50 bg-bg-primary border-b border-border-subtle">
-                <div className="max-w-7xl mx-auto px-6 py-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h1 className="text-2xl font-semibold tracking-tight text-text-primary mb-1">
-                        Anthropic GTM Playbook
-                      </h1>
-                      <p className="text-text-secondary">
-                        Your single source of truth for selling Claude across industries
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="px-3 py-1.5 bg-bg-secondary border border-border-subtle rounded-full">
-                        <span className="text-xs text-text-secondary font-medium">Internal Use Only</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Search */}
-                  <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                    <input
-                      type="text"
-                      placeholder="Search use cases, buyer personas, industries..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 bg-bg-secondary border border-border-subtle rounded-lg focus:outline-none focus:border-accent-primary transition-all text-text-primary placeholder-text-muted"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Search Results */}
-              {searchResults && searchResults.length > 0 && (
-                <div className="max-w-7xl mx-auto px-6 py-6">
-                  <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-4">
-                    <h3 className="text-lg font-semibold mb-3 text-slate-200">
-                      Found {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
-                    </h3>
-                    <div className="space-y-2">
-                      {searchResults.map(result => (
-                        <button
-                          key={result.id}
-                          onClick={() => {
-                            setSelectedIndustry(result.industryKey);
-                            setExpandedUseCase(result.id);
-                            setSearchTerm('');
-                          }}
-                          className="w-full text-left p-3 bg-slate-800/50 hover:bg-slate-800 rounded-lg border border-slate-700 transition-colors"
-                        >
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <div className="font-medium text-white">{result.name}</div>
-                              <div className="text-sm text-slate-400 mt-1">{result.industry} • {result.shortPitch}</div>
-                            </div>
-                            <ChevronRight className="w-5 h-5 text-slate-400 flex-shrink-0" />
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Main Content */}
-              <div className="max-w-7xl mx-auto px-6 py-8">
-                {/* Industry Categories */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  {Object.entries(gtmData).map(([key, industry]) => {
-                    const colors = const const const const const const const const const const const const const const const const const const const const const const const const const const getColorClasses = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' });(industry.color);
-                    const isSelected = selectedIndustry === key;
-                    
-                    return (
-                      <button
-                        key={key}
-                        onClick={() => setSelectedIndustry(isSelected ? null : key)}
-                        className={`text-left p-6 rounded-xl border-2 transition-all ${
-                          isSelected 
-                            ? `${colors.border} bg-gradient-to-br ${colors.gradient}` 
-                            : 'border-slate-800 bg-slate-900/50 hover:border-slate-700'
-                        }`}
-                      >
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="text-4xl">{industry.icon}</div>
-                          {isSelected ? (
-                            <ChevronDown className="w-6 h-6 text-white" />
-                          ) : (
-                            <ChevronRight className="w-6 h-6 text-slate-400" />
-                          )}
-                        </div>
-                        <h3 className="text-xl font-bold text-white mb-2">{industry.name}</h3>
-                        <p className="text-sm text-slate-400 mb-4">{industry.description}</p>
-                        <div className="flex items-center gap-2 text-sm">
-                          <div className={`px-2 py-1 ${colors.bg} ${colors.text} rounded`}>
-                            {industry.useCases.length} Use Cases
-                          </div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Selected Industry Details */}
-                {selectedIndustry && (
-                  <div className="space-y-6">
-                    {/* Key Considerations */}
-                    <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
-                      <div className="flex items-center gap-2 mb-4">
-                        <AlertCircle className="w-5 h-5 text-orange-400" />
-                        <h3 className="text-lg font-medium text-text-primary tracking-tight">
-                          Key Considerations for {gtmData[selectedIndustry].name}
-                        </h3>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {gtmData[selectedIndustry].keyConsiderations.map((consideration, idx) => (
-                          <div key={idx} className="flex items-start gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm text-slate-300">{consideration}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Use Cases */}
-                    <div className="space-y-4">
-                      {gtmData[selectedIndustry].useCases.map((useCase) => {
-                        const isExpanded = expandedUseCase === useCase.id;
-                        const colors = const const const const const const const const const const const const const const const const const const const const const const const const const getColorClasses = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' }); = () => ({   bg: 'bg-bg-secondary',   border: 'border-border-subtle',   text: 'text-accent-primary' });(gtmData[selectedIndustry].color);
-
-                        return (
-                          <div
-                            key={useCase.id}
-                            className="bg-bg-card border border-border-subtle rounded-lg overflow-hidden shadow-soft"
-                          >
-                            {/* Use Case Header */}
-                            <button
-                              onClick={() => setExpandedUseCase(isExpanded ? null : useCase.id)}
-                              className="w-full p-6 text-left hover:bg-bg-secondary transition-colors"
-                            >
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-3 mb-2">
-                                    <h4 className="text-xl font-semibold text-white">{useCase.name}</h4>
-                                    <span className={`px-2 py-0.5 text-xs ${colors.bg} ${colors.text} rounded`}>
-                                      {useCase.id}
-                                    </span>
-                                  </div>
-                                  <p className={`text-sm ${colors.text} mb-3 font-medium`}>
-                                    {useCase.shortPitch}
-                                  </p>
-                                  <div className="flex flex-wrap gap-2">
-                                    {useCase.buyerPersonas.slice(0, 3).map((persona, idx) => (
-                                      <div key={idx} className="flex items-center gap-1 px-2 py-1 bg-slate-800 rounded text-xs text-slate-300">
-                                        <Users className="w-3 h-3" />
-                                        {persona.title}
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                                {isExpanded ? (
-                                  <ChevronDown className="w-6 h-6 text-slate-400 flex-shrink-0 ml-4" />
-                                ) : (
-                                  <ChevronRight className="w-6 h-6 text-slate-400 flex-shrink-0 ml-4" />
-                                )}
-                              </div>
-                            </button>
-
-                            {/* Expanded Content */}
-                            {isExpanded && (
-                              <div className="border-t border-slate-800 p-6 space-y-6">
-                                {/* Problem Being Solved */}
-                                <div>
-                                  <div className="flex items-center gap-2 mb-3">
-                                    <Target className="w-5 h-5 text-red-400" />
-                                    <h5 className="font-semibold text-white">Problem Being Solved</h5>
-                                  </div>
-                                  <p className="text-slate-300 leading-relaxed">{useCase.problemSolved}</p>
-                                </div>
-
-                                {/* How Anthropic's Product is Used */}
-                                <div>
-                                  <div className="flex items-center gap-2 mb-3">
-                                    <Building2 className="w-5 h-5 text-blue-400" />
-                                    <h5 className="font-semibold text-white">How Anthropic's Product is Used</h5>
-                                  </div>
-                                  <ul className="space-y-2">
-                                    {useCase.howUsed.map((item, idx) => (
-                                      <li key={idx} className="flex items-start gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 flex-shrink-0" />
-                                        <span className="text-slate-300">{item}</span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-
-                                {/* Why Anthropic */}
-                                <div>
-                                  <div className="flex items-center gap-2 mb-3">
-                                    <Lightbulb className="w-5 h-5 text-yellow-400" />
-                                    <h5 className="font-semibold text-white">Why Anthropic is Particularly Well-Suited</h5>
-                                  </div>
-                                  <ul className="space-y-2">
-                                    {useCase.whyAnthropic.map((item, idx) => (
-                                      <li key={idx} className="flex items-start gap-2">
-                                        <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                                        <span className="text-slate-300">{item}</span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-
-                                {/* Buyer Personas */}
-                                <div>
-                                  <div className="flex items-center gap-2 mb-3">
-                                    <Users className="w-5 h-5 text-purple-400" />
-                                    <h5 className="font-semibold text-white">Example Buyer Personas</h5>
-                                  </div>
-                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                    {useCase.buyerPersonas.map((persona, idx) => (
-                                      <div key={idx} className="p-3 bg-slate-800 rounded-lg border border-slate-700">
-                                        <div className="font-medium text-white text-sm mb-1">{persona.title}</div>
-                                        <div className="flex items-center gap-2 text-xs text-slate-400">
-                                          <span>{persona.level}</span>
-                                          {persona.technical && (
-                                            <span className="px-1.5 py-0.5 bg-slate-700 rounded">Technical</span>
-                                          )}
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-
-                                {/* GTM Scenario */}
-                                <div className="bg-gradient-to-r from-orange-900/20 to-orange-800/20 border border-orange-500/30 rounded-lg p-4">
-                                  <div className="flex items-start justify-between mb-2">
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-2 h-2 rounded-full bg-orange-400" />
-                                      <h5 className="font-semibold text-orange-400 text-sm">Example GTM Scenario</h5>
-                                    </div>
-                                    <button
-                                      onClick={() => copyToClipboard(useCase.gtmScenario, useCase.id)}
-                                      className="p-1 hover:bg-orange-900/30 rounded transition-colors"
-                                    >
-                                      {copiedText === useCase.id ? (
-                                        <Check className="w-4 h-4 text-green-400" />
-                                      ) : (
-                                        <Copy className="w-4 h-4 text-orange-400" />
-                                      )}
-                                    </button>
-                                  </div>
-                                  <p className="text-slate-200 leading-relaxed italic">{useCase.gtmScenario}</p>
-                                </div>
-
-                                {/* Key Metrics & Competitive Edge */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                  <div className="p-4 bg-green-900/10 border border-green-500/30 rounded-lg">
-                                    <div className="text-xs text-green-400 font-medium mb-1">Key Metrics</div>
-                                    <div className="text-sm text-slate-200">{useCase.keyMetrics}</div>
-                                  </div>
-                                  <div className="p-4 bg-blue-900/10 border border-blue-500/30 rounded-lg">
-                                    <div className="text-xs text-blue-400 font-medium mb-1">Competitive Edge</div>
-                                    <div className="text-sm text-slate-200">{useCase.competitiveEdge}</div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-
-                {/* Empty State */}
-                {!selectedIndustry && !searchTerm && (
-                  <div className="text-center py-12">
-                    <div className="text-slate-400 text-lg mb-2">Select an industry to view use cases</div>
-                    <p className="text-slate-500">Click on Financial Services, Healthcare, or Technology to get started</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        };
-
-        ReactDOM.render(<AnthropicGTMDashboard />, document.getElementById('root'));
-    </script>
+  </script>
 </body>
 </html>
