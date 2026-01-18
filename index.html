@@ -94,6 +94,7 @@
           const gtmData = {
             financial: {
               name: 'Financial Services',
+              icon: '💰',
               color: 'blue',
               description: 'Banking, Investment Management, Insurance & Capital Markets',
               keyConsiderations: [
@@ -104,6 +105,7 @@
               ],
               useCases: [
                 {
+                  id: 'fs-1',
                   name: 'Regulatory & Compliance Analysis Assistant',
                   shortPitch: 'Instant answers to regulatory questions without replacing human judgment',
                   problemSolved: 'Financial institutions face constantly changing regulations (SEC, FINRA, OCC, AML, KYC). Compliance teams spend enormous time reviewing guidance, interpreting updates, and answering internal questions — often manually and inconsistently.',
@@ -129,6 +131,7 @@
                   competitiveEdge: 'Constitutional AI training ensures reliable, non-hallucinated responses in high-stakes compliance scenarios'
                 },
                 {
+                  id: 'fs-2',
                   name: 'Financial Research & Investment Analysis Support',
                   shortPitch: 'Accelerate research workflows while maintaining analyst judgment',
                   problemSolved: 'Analysts and investment teams must process massive volumes of information — earnings reports, filings, research notes, and market commentary — under tight deadlines.',
@@ -154,6 +157,7 @@
                   competitiveEdge: 'Extended context window handles entire annual reports; avoids speculative claims that could mislead investment decisions'
                 },
                 {
+                  id: 'fs-3',
                   name: 'Client Communication & Advisory Support',
                   shortPitch: 'Compliant, client-ready communications at scale',
                   problemSolved: 'Advisors and relationship managers need to communicate clearly with clients about complex financial products, market changes, and portfolio performance — often under time pressure.',
@@ -179,6 +183,7 @@
                   competitiveEdge: 'Constitutional AI reduces risk of inappropriate financial advice; outputs designed for human review workflows'
                 },
                 {
+                  id: 'fs-4',
                   name: 'Operational Risk & Internal Knowledge Assistant',
                   shortPitch: 'Reduce operational risk through instant access to policies and procedures',
                   problemSolved: 'Large financial institutions struggle with fragmented internal knowledge across policies, procedures, and operational guidelines — increasing operational risk and inefficiency.',
@@ -207,6 +212,7 @@
             },
             healthcare: {
               name: 'Healthcare',
+              icon: '🏥',
               color: 'green',
               description: 'Providers, Payers, Life Sciences & Health Systems',
               keyConsiderations: [
@@ -217,6 +223,7 @@
               ],
               useCases: [
                 {
+                  id: 'hc-1',
                   name: 'Clinical Documentation & Administrative Burden Reduction',
                   shortPitch: 'Give clinicians time back for patient care',
                   problemSolved: 'Physicians spend 2+ hours on documentation for every 1 hour of patient care, contributing to burnout. Manual clinical documentation, prior authorization, and administrative tasks overwhelm care teams.',
@@ -242,6 +249,7 @@
                   competitiveEdge: 'HIPAA-compliant with BAA; designed for human-in-the-loop clinical workflows; no training on customer data'
                 },
                 {
+                  id: 'hc-2',
                   name: 'Medical Coding & Revenue Cycle Optimization',
                   shortPitch: 'Capture revenue while reducing coding backlogs',
                   problemSolved: 'Manual medical coding is time-intensive and error-prone. Coding backlogs delay revenue cycle, and undercoding leaves money on the table while overcoding creates compliance risk.',
@@ -267,6 +275,7 @@
                   competitiveEdge: 'Constitutional AI reduces overcoding risk; designed for coder-in-the-loop workflows rather than autonomous coding'
                 },
                 {
+                  id: 'hc-3',
                   name: 'Clinical Trial & Research Acceleration',
                   shortPitch: 'Accelerate research without compromising rigor',
                   problemSolved: 'Clinical trial protocols take 6-12 months to develop. Patient recruitment is slow and expensive. Literature reviews and grant writing consume months of researcher time.',
@@ -292,6 +301,7 @@
                   competitiveEdge: 'Rigorous citation capabilities; designed to avoid hallucinating research findings; HIPAA-compliant patient data handling'
                 },
                 {
+                  id: 'hc-4',
                   name: 'Payer Operations: Claims & Utilization Management',
                   shortPitch: 'Scale utilization review without compromising quality',
                   problemSolved: 'Health plans face growing prior authorization and claims review volume. Manual clinical review creates delays impacting member care and satisfaction. Regulatory requirements demand thorough documentation.',
@@ -320,6 +330,7 @@
             },
             technology: {
               name: 'Technology',
+              icon: '💻',
               color: 'purple',
               description: 'Software, SaaS, Developer Tools & Tech Companies',
               keyConsiderations: [
@@ -330,6 +341,7 @@
               ],
               useCases: [
                 {
+                  id: 'tech-1',
                   name: 'Engineering Productivity & Code Assistance',
                   shortPitch: 'Accelerate development without compromising code quality',
                   problemSolved: 'Engineers spend 35-50% of time on maintenance, debugging, and documentation vs. building new features. Code review bottlenecks delay deployments. Technical debt accumulates.',
@@ -355,6 +367,7 @@
                   competitiveEdge: 'Constitutional AI reduces security vulnerability suggestions; designed for engineer-in-the-loop workflows; no training on customer code'
                 },
                 {
+                  id: 'tech-2',
                   name: 'Technical Support & Customer Success Automation',
                   shortPitch: 'Scale support without proportional headcount growth',
                   problemSolved: 'Support tickets grow faster than team capacity. First response time suffers. Agents spend time on repetitive questions rather than complex issues. Documentation gaps create ticket volume.',
@@ -380,6 +393,7 @@
                   competitiveEdge: 'Designed to avoid confident-but-wrong answers; strong performance on technical documentation; enterprise security and privacy'
                 },
                 {
+                  id: 'tech-3',
                   name: 'Product & Developer Documentation',
                   shortPitch: 'Comprehensive, up-to-date docs without dedicated writers',
                   problemSolved: 'Documentation is outdated or incomplete. Engineers resist writing docs. Customers struggle with self-service leading to support tickets. API documentation lags code changes.',
@@ -405,6 +419,7 @@
                   competitiveEdge: 'Strong performance on technical writing; maintains consistency across large documentation sets; designed for review workflows'
                 },
                 {
+                  id: 'tech-4',
                   name: 'Internal Knowledge Management & Onboarding',
                   shortPitch: 'Preserve institutional knowledge and accelerate ramp time',
                   problemSolved: 'Knowledge fragmentation across Slack, Confluence, GitHub, and Google Docs. New employees take months to ramp. Tribal knowledge lost when employees leave. Engineers repeatedly answer the same questions.',
@@ -459,36 +474,35 @@
             setTimeout(() => setCopiedText(null), 2000);
           };
 
-        const getColorClasses = (color) => {
-  const colors = {
-    blue: {
-      bg: 'bg-sky-100',
-      border: 'border-sky-300',
-      text: 'text-sky-700',
-      hover: 'hover:bg-sky-200',
-      gradient: 'from-sky-100 to-sky-200'
-    },
-    green: {
-      bg: 'bg-emerald-100',
-      border: 'border-emerald-300',
-      text: 'text-emerald-700',
-      hover: 'hover:bg-emerald-200',
-      gradient: 'from-emerald-100 to-emerald-200'
-    },
-    purple: {
-      bg: 'bg-violet-100',
-      border: 'border-violet-300',
-      text: 'text-violet-700',
-      hover: 'hover:bg-violet-200',
-      gradient: 'from-violet-100 to-violet-200'
-    }
-  };
-  return colors[color] || colors.blue;
-};
-
+          const getColorClasses = (color) => {
+            const colors = {
+              blue: {
+                bg: 'bg-blue-900/20',
+                border: 'border-blue-500',
+                text: 'text-blue-400',
+                hover: 'hover:bg-blue-900/30',
+                gradient: 'from-blue-900 to-blue-800'
+              },
+              green: {
+                bg: 'bg-green-900/20',
+                border: 'border-green-500',
+                text: 'text-green-400',
+                hover: 'hover:bg-green-900/30',
+                gradient: 'from-green-900 to-green-800'
+              },
+              purple: {
+                bg: 'bg-purple-900/20',
+                border: 'border-purple-500',
+                text: 'text-purple-400',
+                hover: 'hover:bg-purple-900/30',
+                gradient: 'from-purple-900 to-purple-800'
+              }
+            };
+            return colors[color] || colors.blue;
+          };
 
           return (
-            <div className="min-h-screen bg-gradient-to-br from-stone-50 via-neutral-100 to-stone-50 text-slate-900">
+            <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
               {/* Header */}
               <div className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-xl border-b border-slate-800 shadow-lg">
                 <div className="max-w-7xl mx-auto px-6 py-4">
